@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  background: #050506;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #eef1f4;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(216, 220, 224, 0.25);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+.font-display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* ---------- procedural luxury textures (no external assets) ---------- */
+
+.tex-brushed-metal {
+  background-image:
+    repeating-linear-gradient(
+      100deg,
+      rgba(255, 255, 255, 0.06) 0px,
+      rgba(255, 255, 255, 0) 1px,
+      rgba(255, 255, 255, 0.03) 2px,
+      rgba(0, 0, 0, 0.08) 3px
+    ),
+    linear-gradient(135deg, #1c1d20 0%, #0a0a0c 45%, #202226 55%, #08090a 100%);
+  background-size: 3px 100%, 100% 100%;
+}
+
+.tex-carbon {
+  background-image:
+    repeating-conic-gradient(
+      from 45deg,
+      #0d0d0f 0deg 90deg,
+      #050506 90deg 180deg
+    );
+  background-size: 10px 10px;
+  background-position: 0 0, 5px 5px;
+}
+
+.tex-liquid-chrome {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.35), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(180, 200, 230, 0.25), transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.15), transparent 50%),
+    linear-gradient(160deg, #05060a 0%, #1a1c22 30%, #3a3d45 50%, #101114 70%, #05060a 100%);
+  background-size: 200% 200%;
+  animation: liquidShift 18s ease-in-out infinite;
+}
+
+@keyframes liquidShift {
+  0%, 100% { background-position: 0% 30%, 100% 20%, 40% 90%, 0% 0%; }
+  50% { background-position: 40% 60%, 60% 60%, 60% 20%, 0% 100%; }
+}
+
+.tex-noise {
+  position: relative;
+}
+
+.tex-noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.text-gradient-metal {
+  background: linear-gradient(120deg, #fff 0%, #b9bec6 30%, #6d7178 50%, #d8dce0 70%, #fff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmerText 6s linear infinite;
+}
+
+@keyframes shimmerText {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+.eyebrow {
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: rgba(238, 241, 244, 0.55);
+}
+
+canvas {
+  display: block;
+  touch-action: pan-y;
+}
+
+.grain-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.65) 100%);
+}
