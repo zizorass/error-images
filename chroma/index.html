@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CHROMA — Time, Reimagined in Monochrome</title>
+  <meta name="description" content="CHROMA: precision watches in pure black and white. Sapphire crystal, titanium case, Swiss automatic movement." />
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Aurora background blobs (decorative) -->
+  <div class="aurora" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="#top">CHROMA</a>
+
+      <nav class="main-nav" aria-label="Primary">
+        <ul>
+          <li><a href="#collection">Collection</a></li>
+          <li><a href="#craft">Craft</a></li>
+          <li><a href="#story">Story</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a class="btn btn-primary btn-sm" href="#collection">Shop now</a>
+        <button class="nav-toggle icon-btn" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section id="top" class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow reveal">Precision · Contrast · Craft</p>
+          <h1 class="hero-title reveal">
+            TIME,<br />
+            <span class="grad-text">REIMAGINED</span><br />
+            IN MONOCHROME.
+          </h1>
+          <p class="hero-sub reveal">
+            CHROMA fuses Swiss automatic movements with bold, black-and-white
+            design — watches built to be felt, not just worn.
+          </p>
+          <div class="hero-actions reveal">
+            <a class="btn btn-primary" href="#collection">Explore collection</a>
+            <a class="btn btn-ghost" href="#scrub">
+              Watch the story
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"></path></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal" aria-hidden="true">
+          <canvas id="hero-canvas" width="560" height="560"></canvas>
+        </div>
+      </div>
+
+      <div class="scroll-cue" aria-hidden="true">
+        <span></span>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>PRECISION</span><span>·</span><span>CONTRAST</span><span>·</span><span>CRAFT</span><span>·</span>
+        <span>CHROMA</span><span>·</span><span>PRECISION</span><span>·</span><span>CONTRAST</span><span>·</span>
+        <span>CRAFT</span><span>·</span><span>CHROMA</span><span>·</span>
+        <span>PRECISION</span><span>·</span><span>CONTRAST</span><span>·</span><span>CRAFT</span><span>·</span>
+        <span>CHROMA</span><span>·</span><span>PRECISION</span><span>·</span><span>CONTRAST</span><span>·</span>
+        <span>CRAFT</span><span>·</span><span>CHROMA</span><span>·</span>
+      </div>
+    </div>
+
+    <!-- SCROLL-SCRUB SECTION -->
+    <section id="scrub" class="scrub">
+      <div class="scrub-sticky">
+        <p class="sr-only">
+          Exploded diagram of the CHROMA watch: sapphire crystal glass, titanium case,
+          and Swiss automatic movement, assembling into one precision timepiece.
+        </p>
+        <canvas id="scrub-canvas" aria-hidden="true"></canvas>
+
+        <div class="scrub-copy">
+          <p class="scrub-line" data-index="0">
+            <span class="scrub-kicker">01 · Crystal</span>
+            Sapphire-crystal glass.<br />Scratch-proof, always clear.
+          </p>
+          <p class="scrub-line" data-index="1">
+            <span class="scrub-kicker">02 · Case</span>
+            Aerospace-grade titanium.<br />Light as air, hard as steel.
+          </p>
+          <p class="scrub-line" data-index="2">
+            <span class="scrub-kicker">03 · Movement</span>
+            Swiss automatic movement.<br />Precision that never sleeps.
+          </p>
+        </div>
+
+        <div class="scrub-progress" aria-hidden="true">
+          <span class="scrub-progress-fill" id="scrub-progress-fill"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLLECTION -->
+    <section id="collection" class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-kicker">The lineup</span>
+          <h2>Choose your finish</h2>
+          <p class="section-sub">Five finishes. One obsession with precision.</p>
+        </div>
+
+        <div class="collection-grid">
+          <article class="watch-card reveal" style="--card-a:#f5f5f7; --card-b:#9c9ca6;">
+            <div class="watch-card-face">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="52" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.6)" stroke-width="2"></circle>
+                <circle cx="60" cy="60" r="3" fill="#fff"></circle>
+                <line x1="60" y1="60" x2="60" y2="28" stroke="#fff" stroke-width="3" stroke-linecap="round"></line>
+                <line x1="60" y1="60" x2="84" y2="72" stroke="#fff" stroke-width="3" stroke-linecap="round"></line>
+              </svg>
+            </div>
+            <h3>Platinum</h3>
+            <p>Polished white-gold dial, mirror-finish case.</p>
+            <div class="watch-card-footer">
+              <span class="price">$740</span>
+              <button class="btn btn-ghost btn-sm" type="button">Add to bag</button>
+            </div>
+          </article>
+
+          <article class="watch-card reveal" style="--card-a:#c7c7cf; --card-b:#6b6b74;">
+            <div class="watch-card-face">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="52" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.6)" stroke-width="2"></circle>
+                <circle cx="60" cy="60" r="3" fill="#fff"></circle>
+                <line x1="60" y1="60" x2="60" y2="28" stroke="#fff" stroke-width="3" stroke-linecap="round"></line>
+                <line x1="60" y1="60" x2="40" y2="76" stroke="#fff" stroke-width="3" stroke-linecap="round"></line>
+              </svg>
+            </div>
+            <h3>Steel</h3>
+            <p>Brushed stainless dial, polished steel case.</p>
+            <div class="watch-card-footer">
+              <span class="price">$680</span>
+              <button class="btn btn-ghost btn-sm" type="button">Add to bag</button>
+            </div>
+          </article>
+
+          <article class="watch-card reveal" style="--card-a:#6b6b74; --card-b:#2a2a30;">
+            <div class="watch-card-face">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="52" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.6)" stroke-width="2"></circle>
+                <circle cx="60" cy="60" r="3" fill="#fff"></circle>
+                <line x1="60" y1="60" x2="60" y2="30" stroke="#fff" stroke-width="3" stroke-linecap="round"></line>
+                <line x1="60" y1="60" x2="88" y2="60" stroke="#fff" stroke-width="3" stroke-linecap="round"></line>
+              </svg>
+            </div>
+            <h3>Graphite</h3>
+            <p>Matte charcoal dial, gunmetal case.</p>
+            <div class="watch-card-footer">
+              <span class="price">$695</span>
+              <button class="btn btn-ghost btn-sm" type="button">Add to bag</button>
+            </div>
+          </article>
+
+          <article class="watch-card reveal" style="--card-a:#1c1c20; --card-b:#050506;">
+            <div class="watch-card-face">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="52" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.6)" stroke-width="2"></circle>
+                <circle cx="60" cy="60" r="3" fill="#fff"></circle>
+                <line x1="60" y1="60" x2="60" y2="32" stroke="#fff" stroke-width="3" stroke-linecap="round"></line>
+                <line x1="60" y1="60" x2="34" y2="48" stroke="#fff" stroke-width="3" stroke-linecap="round"></line>
+              </svg>
+            </div>
+            <h3>Onyx</h3>
+            <p>Deep black dial, black DLC-coated case.</p>
+            <div class="watch-card-footer">
+              <span class="price">$710</span>
+              <button class="btn btn-ghost btn-sm" type="button">Add to bag</button>
+            </div>
+          </article>
+
+          <article class="watch-card reveal" style="--card-a:#4a4a52; --card-b:#101013;">
+            <div class="watch-card-face">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="52" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.6)" stroke-width="2"></circle>
+                <circle cx="60" cy="60" r="3" fill="#fff"></circle>
+                <line x1="60" y1="60" x2="60" y2="30" stroke="#fff" stroke-width="3" stroke-linecap="round"></line>
+                <line x1="60" y1="60" x2="78" y2="82" stroke="#fff" stroke-width="3" stroke-linecap="round"></line>
+              </svg>
+            </div>
+            <h3>Shadow</h3>
+            <p>Smoked slate dial, satin titanium case.</p>
+            <div class="watch-card-footer">
+              <span class="price">$720</span>
+              <button class="btn btn-ghost btn-sm" type="button">Add to bag</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CRAFT / STORY -->
+    <section id="craft" class="section section-alt">
+      <div class="container craft-grid">
+        <div class="craft-visual reveal" aria-hidden="true">
+          <div class="craft-block craft-block-1"></div>
+          <div class="craft-block craft-block-2"></div>
+          <div class="craft-block craft-block-3"></div>
+        </div>
+        <div class="craft-copy">
+          <span class="section-kicker reveal">Craftsmanship</span>
+          <h2 class="reveal">Built by hand.<br />Finished in monochrome.</h2>
+          <p class="craft-text reveal">
+            Every CHROMA watch is assembled by a small team of watchmakers, then
+            hand-finished with a proprietary matte/polish contrast process — no two dials
+            catch the light quite the same way.
+          </p>
+
+          <dl class="stat-grid reveal">
+            <div class="stat-item">
+              <dd data-count="50">0</dd>
+              <dt>Hours hand-assembled</dt>
+            </div>
+            <div class="stat-item">
+              <dd data-count="5">0</dd>
+              <dt>ATM water resistance</dt>
+            </div>
+            <div class="stat-item">
+              <dd data-count="2">0</dd>
+              <dt>Year warranty</dt>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <section id="story" class="cta-banner">
+      <div class="container cta-inner reveal">
+        <h2>Own your time.</h2>
+        <p>Free engraving, free shipping, 30-day returns.</p>
+        <a class="btn btn-primary btn-lg" href="#collection">Shop the collection</a>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="container contact-inner">
+        <div class="reveal">
+          <span class="section-kicker">Stay in the loop</span>
+          <h2>Get early access to new finishes</h2>
+          <p class="section-sub">One email a month. No spam, just new finishes.</p>
+        </div>
+        <form class="newsletter-form reveal" id="newsletter-form" novalidate>
+          <div class="form-row">
+            <label for="newsletter-email" class="sr-only">Email address</label>
+            <input type="email" id="newsletter-email" name="email" placeholder="you@example.com" autocomplete="email" required />
+            <button class="btn btn-primary" type="submit">Notify me</button>
+          </div>
+          <span class="field-error" id="newsletter-error" role="alert"></span>
+          <p class="form-status" id="newsletter-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo">CHROMA</span>
+        <p>Time, reimagined in monochrome.</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#collection">Collection</a></li>
+        <li><a href="#craft">Craft</a></li>
+        <li><a href="#story">Story</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <ul class="social-list">
+        <li>
+          <a href="#" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg>
+          </a>
+        </li>
+        <li>
+          <a href="#" aria-label="X (Twitter)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.3 3H21l-6.5 7.4L22 21h-6.6l-5.2-6.6L4.3 21H1.6l7-8-7-10h6.7l4.7 6.1L18.3 3Z"></path></svg>
+          </a>
+        </li>
+      </ul>
+      <p class="copyright">&copy; <span id="year"></span> CHROMA. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
