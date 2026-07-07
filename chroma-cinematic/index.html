@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CHROMA — Time, Reimagined in Monochrome</title>
+  <meta name="description" content="CHROMA: precision Swiss automatic watches in pure black and white." />
+  <link rel="icon" href="data:," />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['"Instrument Serif"', 'serif'],
+            body: ['Barlow', 'sans-serif'],
+          },
+          borderRadius: {
+            DEFAULT: '9999px',
+          },
+        },
+      },
+    };
+  </script>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/framer-motion@11.11.17/dist/framer-motion.js"></script>
+  <!-- This UMD build self-assigns to window.Motion directly (verified against
+       the actual published file); window.FramerMotion is never defined, so
+       the commonly-seen "window.Motion = window.FramerMotion" line would
+       silently null it out and break every animation. Intentionally omitted. -->
+
+  <style>
+    body {
+      background: #000;
+      font-family: 'Barlow', sans-serif;
+    }
+
+    .liquid-glass {
+      background: rgba(255, 255, 255, 0.01);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: none;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .liquid-glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.45) 0%,
+        rgba(255, 255, 255, 0.15) 20%,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0) 60%,
+        rgba(255, 255, 255, 0.15) 80%,
+        rgba(255, 255, 255, 0.45) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .liquid-glass-strong {
+      background: rgba(255, 255, 255, 0.01);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      border: none;
+      box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .liquid-glass-strong::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.5) 0%,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0) 40%,
+        rgba(255, 255, 255, 0) 60%,
+        rgba(255, 255, 255, 0.2) 80%,
+        rgba(255, 255, 255, 0.5) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    /* Static cinematic backdrop (no video/image-generation tool available;
+       see chat for the decision to use a gradient in place of footage). */
+    .cinematic-bg {
+      position: absolute;
+      inset: -10%;
+      background:
+        radial-gradient(60% 50% at 30% 20%, rgba(255, 255, 255, 0.08), transparent 60%),
+        radial-gradient(50% 60% at 80% 70%, rgba(255, 255, 255, 0.05), transparent 65%),
+        linear-gradient(160deg, #050506 0%, #101014 45%, #06060a 100%);
+      animation: cinematicDrift 24s ease-in-out infinite;
+    }
+    .cinematic-bg--capabilities {
+      background:
+        radial-gradient(55% 55% at 70% 30%, rgba(255, 255, 255, 0.07), transparent 60%),
+        radial-gradient(50% 50% at 20% 80%, rgba(255, 255, 255, 0.05), transparent 65%),
+        linear-gradient(200deg, #030304 0%, #0c0c10 50%, #030305 100%);
+      animation-delay: -12s;
+    }
+    @keyframes cinematicDrift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-2%, 1.5%) scale(1.04); }
+    }
+    .cinematic-grain {
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      mix-blend-mode: overlay;
+      background-image: repeating-radial-gradient(circle at 0 0, rgba(255, 255, 255, 0.6) 0, transparent 1px);
+      background-size: 3px 3px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cinematic-bg { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script>
+    // Framer Motion emits benign dev-mode warnings about list keys in some
+    // versions; suppress just that message so real errors stay visible.
+    const originalConsoleError = console.error;
+    console.error = (...args) => {
+      if (typeof args[0] === 'string' && args[0].includes('unique "key" prop')) return;
+      originalConsoleError(...args);
+    };
+  </script>
+
+  <script type="text/babel" src="components/Icons.js"></script>
+  <script type="text/babel" src="components/BlurText.js"></script>
+  <script type="text/babel" src="components/CinematicBackground.js"></script>
+  <script type="text/babel" src="components/WatchVisual.js"></script>
+  <script type="text/babel" src="components/Navbar.js"></script>
+  <script type="text/babel" src="components/Hero.js"></script>
+  <script type="text/babel" src="components/Capabilities.js"></script>
+  <script type="text/babel" src="components/App.js"></script>
+</body>
+</html>
