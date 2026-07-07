@@ -25,7 +25,9 @@ export default function Scene3D() {
       experience.mouse.y += (experience.mouse.targetY - experience.mouse.y) * 0.08
 
       const t = manager.clock.getElapsedTime()
-      const idleSpin = t * 0.12
+      // Gentle sway rather than a full continuous spin, so the dial (and its
+      // now-live clock hands) stays readable instead of endlessly turning away.
+      const idleSpin = Math.sin(t * 0.22) * 0.35
 
       const turns = watchState.collectionSpin / (Math.PI * 2)
       const stopIndex = THREE.MathUtils.clamp(Math.floor(turns), 0, VARIANTS.length - 2)

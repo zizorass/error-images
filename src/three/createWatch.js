@@ -34,15 +34,18 @@ export function createWatch() {
     roughness: 0.45,
     envMapIntensity: 0.8,
   })
+  // A simple alpha-blended "glass" rather than a physical transmission
+  // material: transmission needs its own render pass and was washing out
+  // the dial/hands behind it instead of letting them show through.
   const crystalMat = new THREE.MeshPhysicalMaterial({
     color: 0xffffff,
     metalness: 0,
     roughness: 0.05,
-    transmission: 1,
-    thickness: 0.4,
-    ior: 1.5,
     transparent: true,
-    envMapIntensity: 1.6,
+    opacity: 0.16,
+    clearcoat: 1,
+    clearcoatRoughness: 0.05,
+    envMapIntensity: 1.8,
   })
   const handMat = new THREE.MeshPhysicalMaterial({
     color: 0xf3f4f6,
