@@ -80,6 +80,7 @@ export class SceneManager {
 
     this.watch.setOpen(state.openFactor)
     this.watch.setVariant(state.variantA, state.variantB, state.variantT)
+    this.watch.updateTime()
 
     this.movement.update(state.explodeFactor, t)
 

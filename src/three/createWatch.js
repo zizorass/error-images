@@ -115,16 +115,13 @@ export function createWatch() {
   }
 
   const hourHand = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.5, 0.02), handMat)
-  hourHand.position.set(0, 0.22, 0.21)
   hourHand.geometry.translate(0, 0.25, 0)
   hourHand.position.set(0, -0.03, 0.21)
-  hourHand.rotation.z = -0.6
   dialGroup.add(hourHand)
 
   const minuteHand = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.74, 0.02), handMat)
   minuteHand.geometry.translate(0, 0.37, 0)
   minuteHand.position.set(0, 0, 0.215)
-  minuteHand.rotation.z = 1.9
   dialGroup.add(minuteHand)
 
   const secondHand = new THREE.Mesh(new THREE.BoxGeometry(0.014, 0.82, 0.02), accentMat)
@@ -198,5 +195,23 @@ export function createWatch() {
     movementGroup.visible = factor > 0.02
   }
 
-  return { group, materials, parts: { caseMesh, frontLid, dialGroup, backLid, movementGroup, hands: { hourHand, minuteHand, secondHand } }, setVariant, setOpen }
+  // Drives the hands from the real clock. Angles are measured clockwise from
+  // 12 (matching the hour markers above, which use rotation.z = -a).
+  function updateTime(date = new Date()) {
+    const hours = date.getHours() % 12
+    const minutes = date.getMinutes()
+    const seconds = date.getSeconds() + date.getMilliseconds() / 1000
+
+    const secondsAngle = (seconds / 60) * Math.PI * 2
+    const minutesAngle = ((minutes + seconds / 60) / 60) * Math.PI * 2
+    const hoursAngle = ((hours + minutes / 60) / 12) * Math.PI * 2
+
+    hourHand.rotation.z = -hoursAngle
+    minuteHand.rotation.z = -minutesAngle
+    secondHand.rotation.z = -secondsAngle
+  }
+
+  updateTime()
+
+  return { group, materials, parts: { caseMesh, frontLid, dialGroup, backLid, movementGroup, hands: { hourHand, minuteHand, secondHand } }, setVariant, setOpen, updateTime }
 }
