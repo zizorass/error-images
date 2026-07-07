@@ -60,6 +60,15 @@ export class SceneManager {
     const h = clientHeight || window.innerHeight
     this.renderer.setSize(w, h, false)
     this.camera.aspect = w / h
+
+    // Base FOV (35) is tuned for a ~16:9 frame. On narrower/taller viewports
+    // (tablet, mobile) that same vertical FOV leaves too little horizontal
+    // room for the watch's off-center positions, cropping it. Widen the FOV
+    // as the aspect ratio narrows so the watch always stays fully in frame.
+    const baseAspect = 16 / 9
+    const aspect = w / h
+    this.camera.fov = aspect < baseAspect ? Math.min(82, 35 * (baseAspect / aspect)) : 35
+
     this.camera.updateProjectionMatrix()
   }
 
