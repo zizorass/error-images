@@ -94,11 +94,11 @@ export default function PacketVisual({ flavour, className = '' }) {
         HANDMADE &amp; AIR POPPED IN ENGLAND
       </text>
 
-      {/* stacked wordmark */}
-      <text x="100" y="86" textAnchor="middle" fill={label.word} fontFamily="Outfit, sans-serif" fontWeight="800" fontSize="34" letterSpacing="5">
+      {/* stacked wordmark — bold condensed serif like the real label */}
+      <text x="100" y="88" textAnchor="middle" fill={label.word} fontFamily="Fraunces, Georgia, serif" fontWeight="900" fontSize="37" letterSpacing="4" transform="scale(1 1.08)" transform-origin="100 88">
         JOEY
       </text>
-      <text x="100" y="122" textAnchor="middle" fill={label.word} fontFamily="Outfit, sans-serif" fontWeight="800" fontSize="30" letterSpacing="2">
+      <text x="100" y="124" textAnchor="middle" fill={label.word} fontFamily="Fraunces, Georgia, serif" fontWeight="900" fontSize="31" letterSpacing="1.5" transform="scale(1 1.08)" transform-origin="100 124">
         KOALA
       </text>
 
