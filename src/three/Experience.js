@@ -19,8 +19,10 @@ const THEMES = {
   footer:   { key: '#ffcf7d', rim: '#ff9d3c', fog: '#1a1006', keyIntensity: 1.9, bucket: [0, -2.35, -2.6], scale: 0.55, camDist: 4.6, camHeight: 0.3, bloom: 0.55 },
 }
 
-const CREAM = new THREE.Color('#f7e8c9')
-const CARAMEL = new THREE.Color('#d9942e')
+// Per-instance tints multiply the baked caramel vertex colors, so they stay
+// close to white — just enough variation that no two pieces match.
+const TINT_LIGHT = new THREE.Color('#ffedd2')
+const TINT_DEEP = new THREE.Color('#cf964e')
 
 export class Experience {
   constructor(canvas, { reducedMotion = false } = {}) {
@@ -88,7 +90,7 @@ export class Experience {
 
     const pmrem = new THREE.PMREMGenerator(this.renderer)
     this.scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
-    this.scene.environmentIntensity = 0.38
+    this.scene.environmentIntensity = 0.5
     pmrem.dispose()
   }
 
@@ -130,14 +132,16 @@ export class Experience {
   }
 
   makeCaramelPopcornMaterial() {
+    // Sticky caramel glaze: smooth clearcoat over a warm amber body
     return new THREE.MeshPhysicalMaterial({
       color: '#ffffff',
-      roughness: 0.3,
+      vertexColors: true,
+      roughness: 0.22,
       metalness: 0,
       clearcoat: 1,
-      clearcoatRoughness: 0.3,
-      sheen: 0.4,
-      sheenColor: new THREE.Color('#ffdf9e'),
+      clearcoatRoughness: 0.12,
+      sheen: 0.25,
+      sheenColor: new THREE.Color('#ffd98e'),
     })
   }
 
@@ -170,7 +174,7 @@ export class Experience {
         bobSpeed: 0.3 + Math.random() * 0.5,
         settleT: 0,
       })
-      color.copy(CREAM).lerp(CARAMEL, 0.25 + Math.random() * 0.7)
+      color.copy(TINT_LIGHT).lerp(TINT_DEEP, Math.random() * 0.6)
       mesh.setColorAt(i, color)
     }
     mesh.count = 0 // hidden until the explosion
@@ -245,7 +249,7 @@ export class Experience {
       s.set(sc, sc, sc)
       m.compose(p, q, s)
       heap.setMatrixAt(i, m)
-      color.copy(CREAM).lerp(CARAMEL, 0.25 + Math.random() * 0.7)
+      color.copy(TINT_LIGHT).lerp(TINT_DEEP, Math.random() * 0.6)
       heap.setColorAt(i, color)
     }
     this.bucket.add(heap)
@@ -295,7 +299,7 @@ export class Experience {
     this.burst = []
     for (let i = 0; i < count; i++) {
       this.burst.push({ pos: new THREE.Vector3(), vel: new THREE.Vector3(), life: 0, scale: 0.12 })
-      color.copy(CREAM).lerp(CARAMEL, Math.random())
+      color.copy(TINT_LIGHT).lerp(TINT_DEEP, Math.random() * 0.6)
       this.burstMesh.setColorAt(i, color)
     }
     this.burstMesh.count = 0
