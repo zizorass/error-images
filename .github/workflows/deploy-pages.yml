@@ -1,10 +1,10 @@
-name: Deploy CHROME site to GitHub Pages
+name: Deploy Joey Koala site to GitHub Pages
 
 on:
   push:
     branches:
       - main
-      - claude/chrome-watch-marketing-site-miwubp
+      - claude/joey-koala-popcorn-site-ze70hs
   workflow_dispatch:
 
 permissions:
