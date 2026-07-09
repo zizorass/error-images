@@ -4,8 +4,12 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
-import { createPopcornGeometry, createBucketTexture } from './popcorn.js'
+import {
+  createPopcornGeometry,
+  createBucketTexture,
+  createCaramelTextures,
+  createStudioEnvironment,
+} from './popcorn.js'
 import { bus } from '../lib/bus.js'
 
 const THEMES = {
@@ -21,8 +25,8 @@ const THEMES = {
 
 // Per-instance tints multiply the baked caramel vertex colors, so they stay
 // close to white — just enough variation that no two pieces match.
-const TINT_LIGHT = new THREE.Color('#ffedd2')
-const TINT_DEEP = new THREE.Color('#cf964e')
+const TINT_LIGHT = new THREE.Color('#fff4e0')
+const TINT_DEEP = new THREE.Color('#dda861')
 
 export class Experience {
   constructor(canvas, { reducedMotion = false } = {}) {
@@ -78,6 +82,10 @@ export class Experience {
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping
     this.renderer.toneMappingExposure = 0.95
+    // Soft shadows are a big part of the photoreal look; skip them on
+    // mobile GPUs to hold 60fps
+    this.renderer.shadowMap.enabled = !this.isMobile
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
   }
 
   initScene() {
@@ -89,17 +97,27 @@ export class Experience {
     this.camera.position.set(0, 0.25, 4.6)
 
     const pmrem = new THREE.PMREMGenerator(this.renderer)
-    this.scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
-    this.scene.environmentIntensity = 0.5
+    this.scene.environment = pmrem.fromScene(createStudioEnvironment(), 0.04).texture
+    this.scene.environmentIntensity = 0.85
     pmrem.dispose()
   }
 
   initLights() {
     this.keyLight = new THREE.DirectionalLight('#ffd9a0', 1.6)
     this.keyLight.position.set(2.5, 3.5, 3)
+    this.keyLight.castShadow = true
+    this.keyLight.shadow.mapSize.set(1024, 1024)
+    this.keyLight.shadow.camera.left = -3.5
+    this.keyLight.shadow.camera.right = 3.5
+    this.keyLight.shadow.camera.top = 3.5
+    this.keyLight.shadow.camera.bottom = -3.5
+    this.keyLight.shadow.camera.near = 0.5
+    this.keyLight.shadow.camera.far = 12
+    this.keyLight.shadow.bias = -0.002
+    this.keyLight.shadow.radius = 5
     this.rimLight = new THREE.DirectionalLight('#ff9d3c', 1.2)
     this.rimLight.position.set(-3, 1.5, -3.5)
-    this.fillLight = new THREE.HemisphereLight('#fff2dd', '#2a1a0a', 0.35)
+    this.fillLight = new THREE.HemisphereLight('#fff2dd', '#2a1a0a', 0.3)
     this.glowLight = new THREE.PointLight('#e0a04a', 2.2, 9, 2)
     this.glowLight.position.set(0, 0.4, 1.4)
     this.scene.add(this.keyLight, this.rimLight, this.fillLight, this.glowLight)
@@ -132,15 +150,22 @@ export class Experience {
   }
 
   makeCaramelPopcornMaterial() {
-    // Sticky caramel glaze: smooth clearcoat over a warm amber body
+    // Sticky caramel glaze: mottled albedo + granular bump + uneven
+    // roughness over baked vertex colors, sealed with a wet clearcoat.
+    if (!this.caramelMaps) this.caramelMaps = createCaramelTextures()
+    const { map, bumpMap, roughnessMap } = this.caramelMaps
     return new THREE.MeshPhysicalMaterial({
       color: '#ffffff',
       vertexColors: true,
-      roughness: 0.22,
+      map,
+      bumpMap,
+      bumpScale: 0.5,
+      roughnessMap,
+      roughness: 0.5,
       metalness: 0,
-      clearcoat: 1,
-      clearcoatRoughness: 0.12,
-      sheen: 0.25,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.22,
+      sheen: 0.2,
       sheenColor: new THREE.Color('#ffd98e'),
     })
   }
@@ -194,6 +219,8 @@ export class Experience {
       side: THREE.DoubleSide,
     })
     const body = new THREE.Mesh(bodyGeo, bodyMat)
+    body.castShadow = true
+    body.receiveShadow = true
     this.bucket.add(body)
 
     const rim = new THREE.Mesh(
@@ -228,31 +255,42 @@ export class Experience {
       this.bucket.add(drip)
     }
 
-    // Heap of glossy popcorn overflowing the top
+    // Heap of glossy popcorn overflowing the top — two shape variants, with
+    // occlusion baked into the tints (pieces buried deeper sit darker).
     const heapCount = this.isMobile ? 90 : 140
-    const heapGeo = createPopcornGeometry(11)
-    const heap = new THREE.InstancedMesh(heapGeo, this.makeCaramelPopcornMaterial(), heapCount)
+    const half = Math.ceil(heapCount / 2)
     const m = new THREE.Matrix4()
     const q = new THREE.Quaternion()
     const e = new THREE.Euler()
     const s = new THREE.Vector3()
     const p = new THREE.Vector3()
     const color = new THREE.Color()
-    for (let i = 0; i < heapCount; i++) {
-      const r = Math.sqrt(Math.random()) * 0.92
-      const a = Math.random() * Math.PI * 2
-      const domeY = Math.sqrt(Math.max(0, 0.95 * 0.95 - r * r)) * 0.6
-      p.set(Math.cos(a) * r, 0.72 + domeY + (Math.random() - 0.08) * 0.1, Math.sin(a) * r)
-      e.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2)
-      q.setFromEuler(e)
-      const sc = 0.2 + Math.random() * 0.14
-      s.set(sc, sc, sc)
-      m.compose(p, q, s)
-      heap.setMatrixAt(i, m)
-      color.copy(TINT_LIGHT).lerp(TINT_DEEP, Math.random() * 0.6)
-      heap.setColorAt(i, color)
+    for (const seed of [11, 29]) {
+      const heap = new THREE.InstancedMesh(
+        createPopcornGeometry(seed),
+        this.makeCaramelPopcornMaterial(),
+        half
+      )
+      heap.castShadow = true
+      heap.receiveShadow = true
+      for (let i = 0; i < half; i++) {
+        const r = Math.sqrt(Math.random()) * 0.92
+        const a = Math.random() * Math.PI * 2
+        const domeY = Math.sqrt(Math.max(0, 0.95 * 0.95 - r * r)) * 0.6
+        p.set(Math.cos(a) * r, 0.72 + domeY + (Math.random() - 0.08) * 0.1, Math.sin(a) * r)
+        e.set(Math.random() * Math.PI * 2, Math.random() * Math.PI * 2, Math.random() * Math.PI * 2)
+        q.setFromEuler(e)
+        const sc = 0.2 + Math.random() * 0.14
+        s.set(sc, sc, sc)
+        m.compose(p, q, s)
+        heap.setMatrixAt(i, m)
+        // ambient occlusion: pieces low in the dome read darker
+        const ao = 0.62 + 0.38 * (domeY / 0.6)
+        color.copy(TINT_LIGHT).lerp(TINT_DEEP, Math.random() * 0.6).multiplyScalar(ao)
+        heap.setColorAt(i, color)
+      }
+      this.bucket.add(heap)
     }
-    this.bucket.add(heap)
 
     this.bucket.position.set(0, -1.35, -0.5)
     this.bucket.scale.setScalar(0.001)
